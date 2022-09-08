@@ -1,3 +1,7 @@
+using API_Events.Core.Interfaces;
+using API_Events.Infra.Data;
+using API_Events.Infra.Data.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddSingleton<IConnectionDataBase, ConnectionDataBase>();
+builder.Services.AddScoped<ICityEventRepository, CityEventRepository>();
 
 var app = builder.Build();
 
