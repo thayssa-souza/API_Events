@@ -16,9 +16,19 @@ namespace API_Events.Core.Services
             return _cityEventRepository.GetCityEvents();
         }
 
-        public CityEvent GetSpecificEvent(long id)
+        public List<CityEvent> GetEventByTitle(string title)
         {
-            return _cityEventRepository.GetSpecificEvent(id);
+            return _cityEventRepository.GetEventByTitle(title);
+        }
+
+        public bool InsertCityEvent(CityEvent newCityEvent)
+        {
+            return _cityEventRepository.InsertCityEvent(newCityEvent);
+        }
+
+        public bool UpdateCityEvent(long id, CityEvent cityEvent)
+        {
+            return _cityEventRepository.UpdateCityEvent(id, cityEvent);
         }
     }
 }

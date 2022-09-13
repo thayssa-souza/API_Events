@@ -5,6 +5,8 @@ namespace API_Events.Core.Interfaces
     public interface ICityEventRepository
     {
         List<CityEvent> GetCityEvents();
-        CityEvent GetSpecificEvent(long id);
+        List<CityEvent> GetEventByTitle(string title);
+        bool InsertCityEvent(CityEvent newCityEvent);
+        bool UpdateCityEvent(long id, CityEvent cityEvent);
     }
 }

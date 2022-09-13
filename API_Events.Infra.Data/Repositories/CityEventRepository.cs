@@ -20,15 +20,37 @@ namespace API_Events.Infra.Data.Repositories
             return conn.Query<CityEvent>(query).ToList();
         }
 
-        public CityEvent GetSpecificEvent(long id)
+        public List<CityEvent> GetEventByTitle(string title)
         {
-            var query = "SELECT * FROM CityEvent WHERE id = @id";
+            var query = $"SELECT * FROM CityEvent WHERE title LIKE ('%' + @title + '%')";
             var parameters = new DynamicParameters(new
             {
-                id,
+                title,
             });
+
             using var conn = _cnnDataBase.CreateConnection();
-            return conn.QueryFirstOrDefault<CityEvent>(query, parameters);
+            return conn.Query<CityEvent>(query, parameters).ToList();
+        }
+
+        public bool InsertCityEvent(CityEvent newCityEvent)
+        {
+            var query = "INSERT INTO CityEvent VALUES (@Title, @Description, @DateHourEvent, " +
+                "@Local, @Address, @Price, @Status)";
+            var parameters = new DynamicParameters(newCityEvent);
+
+            using var conn = _cnnDataBase.CreateConnection();
+            return conn.Execute(query, parameters) == 1;
+        }
+
+        public bool UpdateCityEvent(long id, CityEvent cityEvent)
+        {
+            var query = "UPDATE CityEvent set Title = @Title, Description = @Description, DateHourEvent = @DateHourEvent" +
+                "Local = @Local, Address = @Adress, Price = @Price, Status = @Status";
+            var parameters = new DynamicParameters(cityEvent);
+            cityEvent.IdEvent = id;
+
+            using var conn = _cnnDataBase.CreateConnection();
+            return conn.Execute(query, parameters) == 1;
         }
     }
 }

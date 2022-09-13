@@ -1,4 +1,5 @@
 using API_Events.Core.Interfaces;
+using API_Events.Core.Services;
 using API_Events.Infra.Data;
 using API_Events.Infra.Data.Repositories;
 
@@ -13,6 +14,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IConnectionDataBase, ConnectionDataBase>();
 builder.Services.AddScoped<ICityEventRepository, CityEventRepository>();
+builder.Services.AddScoped<ICityEventService, CityEventService>();
 
 var app = builder.Build();
 
