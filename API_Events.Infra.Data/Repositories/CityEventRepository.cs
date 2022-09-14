@@ -64,5 +64,17 @@ namespace API_Events.Infra.Data.Repositories
             using var conn = _cnnDataBase.CreateConnection();
             return conn.Execute(query, parameters) == 1;
         }
+
+        public bool DeleteCityEvent(long idEvent)
+        {
+            var query = "DELETE FROM CityEvent WHERE IdEvent = @idEvent";
+            var parameters = new DynamicParameters(new
+            {
+                idEvent,
+            });
+
+            using var conn = _cnnDataBase.CreateConnection();
+            return conn.Execute(query, parameters) == 1;
+        }
     }
 }

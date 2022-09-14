@@ -35,5 +35,11 @@ namespace API_Events.Core.Services
         {
             return _cityEventRepository.UpdateCityEvent(idEvent, cityEvent);
         }
+
+        public bool DeleteCityEvent(long idEvent)
+        {
+            return _cityEventRepository.DeleteCityEvent(idEvent);
+        }
+
     }
 }

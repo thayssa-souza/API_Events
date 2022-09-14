@@ -65,5 +65,15 @@ namespace API_Events.Controllers
             ActionResult<CityEvent> events = (!_cityEventService.UpdateCityEvent(idEvent, cityEvent)) ? BadRequest() : Ok(cityEvent);
             return events;
         }
+
+        [HttpDelete("deletar-evento")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<CityEvent> DeleteCityEvent(long idEvent)
+        {
+            ActionResult<CityEvent> events = (!_cityEventService.DeleteCityEvent(idEvent)) ? BadRequest() : Ok();
+            return events;
+        }
+
     }
 }
