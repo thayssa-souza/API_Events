@@ -26,6 +26,11 @@ namespace API_Events.Core.Services
             return _cityEventRepository.GetEventByTitle(title);
         }
 
+        public List<CityEvent> GetEventByPriceDate(decimal priceMin, decimal priceMax, DateTime dateHourEvent)
+        {
+            return _cityEventRepository.GetEventByPriceDate(priceMin, priceMax, dateHourEvent);
+        }
+
         public bool InsertCityEvent(CityEvent newCityEvent)
         {
             return _cityEventRepository.InsertCityEvent(newCityEvent);

@@ -1,6 +1,7 @@
 using API_Events.Core.Interfaces;
 using API_Events.Core.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.Eventing.Reader;
 
 namespace API_Events.Controllers
 {
@@ -44,6 +45,16 @@ namespace API_Events.Controllers
         public ActionResult<CityEvent> GetEventByLocalDate(string local, DateTime dateEvent)
         {
             var cityEvents = _cityEventService.GetEventByLocalDate(local, dateEvent);
+            ActionResult<CityEvent> events = (cityEvents != null) ? Ok(cityEvents) : NotFound();
+            return events;
+        }
+
+        [HttpGet("buscar-evento-preco-data")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<CityEvent> GetEventByPriceDate(decimal priceMin, decimal priceMax, DateTime dateHourEvent)
+        {
+            var cityEvents = _cityEventService.GetEventByPriceDate(priceMin, priceMax, dateHourEvent);
             ActionResult<CityEvent> events = (cityEvents != null) ? Ok(cityEvents) : NotFound();
             return events;
         }

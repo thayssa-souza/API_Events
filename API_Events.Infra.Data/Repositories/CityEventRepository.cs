@@ -1,6 +1,8 @@
 ﻿using API_Events.Core.Interfaces;
 using API_Events.Core.Models;
 using Dapper;
+using System;
+using System.Diagnostics;
 
 namespace API_Events.Infra.Data.Repositories
 {
@@ -39,6 +41,20 @@ namespace API_Events.Infra.Data.Repositories
             {
                 Local = local,
                 DateHourEvent = dateHourEvent,
+            });
+
+            using var conn = _cnnDataBase.CreateConnection();
+            return conn.Query<CityEvent>(query, parameters).ToList();
+        }
+
+        public List<CityEvent> GetEventByPriceDate(decimal priceMin, decimal priceMax, DateTime dateHourEvent)
+        {
+            var query = $"SELECT * FROM CityEvent WHERE price BETWEEN @priceMin AND @priceMax AND CONVERT (DATE, DateHourEvent) = @dateHourEvent";
+            var parameters = new DynamicParameters(new
+            {
+                priceMin,
+                priceMax,
+                dateHourEvent,
             });
 
             using var conn = _cnnDataBase.CreateConnection();
