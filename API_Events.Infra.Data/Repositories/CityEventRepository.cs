@@ -13,7 +13,7 @@ namespace API_Events.Infra.Data.Repositories
             _cnnDataBase = cnnDataBase;
         }
 
-        public List<CityEvent> GetCityEvents()
+        public List<CityEvent> GetAllEvents()
         {
             var query = "SELECT * FROM CityEvent";
             using var conn = _cnnDataBase.CreateConnection();
@@ -32,6 +32,19 @@ namespace API_Events.Infra.Data.Repositories
             return conn.Query<CityEvent>(query, parameters).ToList();
         }
 
+        public List<CityEvent> GetEventByLocalDate(string local, DateTime dateHourEvent)
+        {
+            var query = $"SELECT * FROM CityEvent WHERE local LIKE ('%' + @local + '%') AND CONVERT (DATE, DateHourEvent) = @dateHourEvent";
+            var parameters = new DynamicParameters(new
+            {
+                Local = local,
+                DateHourEvent = dateHourEvent,
+            });
+
+            using var conn = _cnnDataBase.CreateConnection();
+            return conn.Query<CityEvent>(query, parameters).ToList();
+        }
+
         public bool InsertCityEvent(CityEvent newCityEvent)
         {
             var query = "INSERT INTO CityEvent VALUES (@Title, @Description, @DateHourEvent, " +
@@ -42,12 +55,11 @@ namespace API_Events.Infra.Data.Repositories
             return conn.Execute(query, parameters) == 1;
         }
 
-        public bool UpdateCityEvent(long id, CityEvent cityEvent)
+        public bool UpdateCityEvent(long idEvent, CityEvent cityEvent)
         {
-            var query = "UPDATE CityEvent set Title = @Title, Description = @Description, DateHourEvent = @DateHourEvent" +
-                "Local = @Local, Address = @Adress, Price = @Price, Status = @Status";
+            var query = "UPDATE CityEvent set Title = @Title, Description = @Description, DateHourEvent = @DateHourEvent, Local = @Local, Address = @Address, Price = @Price, Status = @Status WHERE IdEvent = @idEvent";
             var parameters = new DynamicParameters(cityEvent);
-            cityEvent.IdEvent = id;
+            cityEvent.IdEvent = idEvent;
 
             using var conn = _cnnDataBase.CreateConnection();
             return conn.Execute(query, parameters) == 1;

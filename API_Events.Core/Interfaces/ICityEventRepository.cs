@@ -4,9 +4,11 @@ namespace API_Events.Core.Interfaces
 {
     public interface ICityEventRepository
     {
-        List<CityEvent> GetCityEvents();
+        List<CityEvent> GetAllEvents();
         List<CityEvent> GetEventByTitle(string title);
+        List<CityEvent> GetEventByLocalDate(string local, DateTime dateEvent);
+
         bool InsertCityEvent(CityEvent newCityEvent);
-        bool UpdateCityEvent(long id, CityEvent cityEvent);
+        bool UpdateCityEvent(long idEvent, CityEvent cityEvent);
     }
 }

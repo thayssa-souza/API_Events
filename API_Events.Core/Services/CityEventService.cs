@@ -11,9 +11,14 @@ namespace API_Events.Core.Services
             _cityEventRepository = cityEventRepository;
         }
 
-        public List<CityEvent> GetCityEvents()
+        public List<CityEvent> GetAllEvents()
         {
-            return _cityEventRepository.GetCityEvents();
+            return _cityEventRepository.GetAllEvents();
+        }
+
+        public List<CityEvent> GetEventByLocalDate(string local, DateTime dateEvent)
+        {
+            return _cityEventRepository.GetEventByLocalDate(local, dateEvent);
         }
 
         public List<CityEvent> GetEventByTitle(string title)
@@ -26,9 +31,9 @@ namespace API_Events.Core.Services
             return _cityEventRepository.InsertCityEvent(newCityEvent);
         }
 
-        public bool UpdateCityEvent(long id, CityEvent cityEvent)
+        public bool UpdateCityEvent(long idEvent, CityEvent cityEvent)
         {
-            return _cityEventRepository.UpdateCityEvent(id, cityEvent);
+            return _cityEventRepository.UpdateCityEvent(idEvent, cityEvent);
         }
     }
 }
