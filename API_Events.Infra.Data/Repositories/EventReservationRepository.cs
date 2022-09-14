@@ -20,24 +20,42 @@ namespace API_Events.Infra.Data.Repositories
             return conn.Query<EventReservation>(query).ToList();
         }
 
-        public List<EventReservation> GetReservationEventByPerson(string title, string personName)
-        {
-            throw new NotImplementedException();
-        }
+        //public List<EventReservation> GetReservationEventByPerson(string title, string personName)
+        //{
+        //    return GetReservationList();
+        //}
 
         public bool InsertReservation(EventReservation newEventReservation)
         {
-            throw new NotImplementedException();
+            var query = "INSERT INTO EventReservation VALUES (@idEvent, @PersonName, @Quantity)";
+            var parameters = new DynamicParameters(new
+            {
+                newEventReservation.IdEvent,
+                newEventReservation.PersonName,
+                newEventReservation.Quantity,
+            });
+            using var conn = _cnnDataBase.CreateConnection();
+            return conn.Execute(query, parameters) == 1;
         }
 
-        public bool UpdateQuantityReservation(long quantity, EventReservation newEventReservation)
+        public bool UpdateQuantityReservation(long idReservation, EventReservation eventReservation)
         {
-            throw new NotImplementedException();
+            var query = "UPDATE EventReservation SET Quantity = @quantity WHERE IdReservation = @idReservation";
+            var parameters = new DynamicParameters(new
+            {
+                eventReservation.Quantity,
+                eventReservation.IdReservation,
+            });
+            using var conn = _cnnDataBase.CreateConnection();
+            return conn.Execute(query, parameters) == 1;
         }
 
         public bool DeleteReservation(long idReservation)
         {
-            throw new NotImplementedException();
+            var query = "DELETE FROM EventReservation WHERE IdReservation = @idReservation";
+            var parameters = new { idReservation };
+            using var conn = _cnnDataBase.CreateConnection();
+            return conn.Execute(query, parameters) == 1;
         }
     }
 }

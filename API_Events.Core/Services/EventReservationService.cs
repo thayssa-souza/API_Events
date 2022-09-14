@@ -1,10 +1,5 @@
 ﻿using API_Events.Core.Interfaces.IReservations;
 using API_Events.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace API_Events.Core.Services
 {
@@ -21,19 +16,19 @@ namespace API_Events.Core.Services
             return _eventReservationRepository.GetReservationList();
         }
 
-        public List<EventReservation> GetReservationEventByPerson(string title, string personName)
-        {
-            return _eventReservationRepository.GetReservationEventByPerson(title, personName);
-        }
+        //public List<EventReservation> GetReservationEventByPerson(string title, string personName)
+        //{
+        //    return _eventReservationRepository.GetReservationEventByPerson(title, personName);
+        //}
 
         public bool InsertReservation(EventReservation newEventReservation)
         {
             return _eventReservationRepository.InsertReservation(newEventReservation);
         }
 
-        public bool UpdateQuantityReservation(long quantity, EventReservation newEventReservation)
+        public bool UpdateQuantityReservation(long idReservation, EventReservation eventReservation)
         {
-            return _eventReservationRepository.UpdateQuantityReservation(quantity, newEventReservation);
+            return _eventReservationRepository.UpdateQuantityReservation(idReservation, eventReservation);
         }
 
         public bool DeleteReservation(long idReservation)
