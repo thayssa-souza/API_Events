@@ -1,4 +1,5 @@
-﻿using API_Events.Core.Interfaces;
+﻿using API_Events.Core.Interfaces.IEvents;
+using API_Events.Core.Interfaces.IRepository;
 using API_Events.Core.Models;
 
 namespace API_Events.Core.Services

@@ -1,8 +1,8 @@
 ﻿using API_Events.Core.Models;
 
-namespace API_Events.Core.Interfaces
+namespace API_Events.Core.Interfaces.IEvents
 {
-    public interface ICityEventRepository
+    public interface ICityEventService
     {
         List<CityEvent> GetAllEvents();
         List<CityEvent> GetEventByTitle(string title);
@@ -11,6 +11,5 @@ namespace API_Events.Core.Interfaces
         bool InsertCityEvent(CityEvent newCityEvent);
         bool UpdateCityEvent(long idEvent, CityEvent cityEvent);
         bool DeleteCityEvent(long idEvent);
-
     }
 }
