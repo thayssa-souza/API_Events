@@ -20,10 +20,18 @@ namespace API_Events.Infra.Data.Repositories
             return conn.Query<EventReservation>(query).ToList();
         }
 
-        //public List<EventReservation> GetReservationEventByPerson(string title, string personName)
-        //{
-        //    return GetReservationList();
-        //}
+        public List<EventReservation> GetReservationEventByPerson(string title, string personName)
+        {
+            var query = $"SELECT * FROM EventReservation AS event " +
+                $"INNER JOIN CityEvent AS city ON event.PersonName = @personName AND city.Title LIKE ('%' + @title + '%') " +
+                $"WHERE event.IdEvent = city.IdEvent";
+            var parameters = new DynamicParameters(new
+            {
+                title, personName,
+            });
+            using var conn = _cnnDataBase.CreateConnection();
+            return conn.Query<EventReservation>(query, parameters).ToList();
+        }
 
         public bool InsertReservation(EventReservation newEventReservation)
         {

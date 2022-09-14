@@ -16,10 +16,10 @@ namespace API_Events.Core.Services
             return _eventReservationRepository.GetReservationList();
         }
 
-        //public List<EventReservation> GetReservationEventByPerson(string title, string personName)
-        //{
-        //    return _eventReservationRepository.GetReservationEventByPerson(title, personName);
-        //}
+        public List<EventReservation> GetReservationEventByPerson(string title, string personName)
+        {
+            return _eventReservationRepository.GetReservationEventByPerson(title, personName);
+        }
 
         public bool InsertReservation(EventReservation newEventReservation)
         {

@@ -16,12 +16,22 @@ namespace API_Events.Controllers
             _eventReservationService = eventReservationService;
         }
 
-        [HttpGet("bucar-reservas")]
+        [HttpGet("consultar-reservas")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<EventReservation> GetReservationList()
         {
             var eventReservation = _eventReservationService.GetReservationList();
+            ActionResult<EventReservation> events = eventReservation != null ? Ok(eventReservation) : BadRequest();
+            return events;
+        }
+
+        [HttpGet("buscar-reserva-por-evento-e-pessoa")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<EventReservation> GetReservationEventByPerson(string title, string personName)
+        {
+            var eventReservation = _eventReservationService.GetReservationEventByPerson(title, personName);
             ActionResult<EventReservation> events = eventReservation != null ? Ok(eventReservation) : BadRequest();
             return events;
         }
