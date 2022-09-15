@@ -1,5 +1,6 @@
 ﻿using API_Events.Core.Interfaces.IReservations;
 using API_Events.Core.Models;
+using API_Events.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_Events.Controllers
@@ -39,6 +40,7 @@ namespace API_Events.Controllers
         [HttpPost("adicionar-nova-reserva")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ServiceFilter(typeof(ValidateExistEventActionFilter))]
         public ActionResult<EventReservation> InsertReservation(long idEvent, EventReservation newEventReservation)
         {
             ActionResult<EventReservation> events = (!_eventReservationService.InsertReservation(newEventReservation)) ? BadRequest() : Ok(newEventReservation);

@@ -1,5 +1,6 @@
 using API_Events.Core.Interfaces.IEvents;
 using API_Events.Core.Models;
+using API_Events.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_Events.Controllers
@@ -70,6 +71,7 @@ namespace API_Events.Controllers
         [HttpPut("atualizar-evento")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ServiceFilter(typeof(ValidateExistEventActionFilter))]
         public ActionResult<CityEvent> UpdateCityEvent(long idEvent, CityEvent cityEvent)
         {
             ActionResult<CityEvent> events = (!_cityEventService.UpdateCityEvent(idEvent, cityEvent)) ? BadRequest() : Ok(cityEvent);
@@ -79,6 +81,7 @@ namespace API_Events.Controllers
         [HttpDelete("deletar-evento")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ServiceFilter(typeof(ValidateExistEventActionFilter))]
         public ActionResult<CityEvent> DeleteCityEvent(long idEvent)
         {
             ActionResult<CityEvent> events = (!_cityEventService.DeleteCityEvent(idEvent)) ? BadRequest() : Ok();

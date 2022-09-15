@@ -17,6 +17,11 @@ namespace API_Events.Core.Services
             return _cityEventRepository.GetAllEvents();
         }
 
+        public CityEvent GetEventById(long idEvent)
+        {
+            return _cityEventRepository.GetEventById(idEvent);
+        }
+
         public List<CityEvent> GetEventByLocalDate(string local, DateTime dateEvent)
         {
             return _cityEventRepository.GetEventByLocalDate(local, dateEvent);
@@ -46,6 +51,5 @@ namespace API_Events.Core.Services
         {
             return _cityEventRepository.DeleteCityEvent(idEvent);
         }
-
     }
 }

@@ -23,6 +23,18 @@ namespace API_Events.Infra.Data.Repositories
             return conn.Query<CityEvent>(query).ToList();
         }
 
+        public CityEvent GetEventById(long idEvent)
+        {
+            var query = "SELECT * FROM CityEvent WHERE IdEvent = @idEvent";
+            var parameters = new DynamicParameters(new 
+            { 
+                idEvent, 
+            });
+
+            using var conn = _cnnDataBase.CreateConnection();
+            return conn.QueryFirstOrDefault<CityEvent>(query, parameters);
+        }
+
         public List<CityEvent> GetEventByTitle(string title)
         {
             var query = $"SELECT * FROM CityEvent WHERE title LIKE ('%' + @title + '%')";
