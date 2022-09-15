@@ -7,8 +7,8 @@ namespace API_Events.Core.Interfaces.IReservations
         List<EventReservation> GetReservationList();
         EventReservation GetReservationById(long idReservation);
         List<EventReservation> GetReservationEventByPerson(string title, string personName);
-        bool InsertReservation(EventReservation newEventReservation);
-        bool UpdateQuantityReservation(long idReservation, EventReservation eventReservation);
+        bool InsertReservation(long idEvent, string personName, long quantity);
+        bool UpdateQuantityReservation(long idReservation, long quantity);
         bool DeleteReservation(long idReservation);
     }
 }

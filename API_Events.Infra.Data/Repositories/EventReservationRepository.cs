@@ -45,26 +45,26 @@ namespace API_Events.Infra.Data.Repositories
             return conn.Query<EventReservation>(query, parameters).ToList();
         }
 
-        public bool InsertReservation(EventReservation newEventReservation)
+        public bool InsertReservation(long idEvent, string personName, long quantity)
         {
             var query = "INSERT INTO EventReservation VALUES (@idEvent, @PersonName, @Quantity)";
             var parameters = new DynamicParameters(new
             {
-                newEventReservation.IdEvent,
-                newEventReservation.PersonName,
-                newEventReservation.Quantity,
+                idEvent,
+                personName,
+                quantity,
             });
             using var conn = _cnnDataBase.CreateConnection();
             return conn.Execute(query, parameters) == 1;
         }
 
-        public bool UpdateQuantityReservation(long idReservation, EventReservation eventReservation)
+        public bool UpdateQuantityReservation(long idReservation, long quantity)
         {
             var query = "UPDATE EventReservation SET Quantity = @quantity WHERE IdReservation = @idReservation";
             var parameters = new DynamicParameters(new
             {
-                eventReservation.Quantity,
-                eventReservation.IdReservation,
+                idReservation,
+                quantity,
             });
             using var conn = _cnnDataBase.CreateConnection();
             return conn.Execute(query, parameters) == 1;

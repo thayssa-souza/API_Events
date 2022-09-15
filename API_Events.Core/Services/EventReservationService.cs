@@ -25,14 +25,14 @@ namespace API_Events.Core.Services
             return _eventReservationRepository.GetReservationEventByPerson(title, personName);
         }
 
-        public bool InsertReservation(EventReservation newEventReservation)
+        public bool InsertReservation(long idEvent, string personName, long quantity)
         {
-            return _eventReservationRepository.InsertReservation(newEventReservation);
+            return _eventReservationRepository.InsertReservation(idEvent, personName, quantity);
         }
 
-        public bool UpdateQuantityReservation(long idReservation, EventReservation eventReservation)
+        public bool UpdateQuantityReservation(long idReservation, long quantity)
         {
-            return _eventReservationRepository.UpdateQuantityReservation(idReservation, eventReservation);
+            return _eventReservationRepository.UpdateQuantityReservation(idReservation, quantity);
         }
 
         public bool DeleteReservation(long idReservation)

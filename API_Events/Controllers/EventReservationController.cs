@@ -41,10 +41,10 @@ namespace API_Events.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ServiceFilter(typeof(ValidateExistEventActionFilter))]
-        public ActionResult<EventReservation> InsertReservation(long idEvent, EventReservation newEventReservation)
+        public ActionResult<EventReservation> InsertReservation(long idEvent, string personName, long quantity)
         {
-            ActionResult<EventReservation> events = (!_eventReservationService.InsertReservation(newEventReservation)) ? 
-                BadRequest() : Ok(newEventReservation);
+            ActionResult<EventReservation> events = (!_eventReservationService.InsertReservation(idEvent, personName, quantity)) ? 
+                BadRequest() : Ok();
             return events;
         }
 
@@ -52,10 +52,10 @@ namespace API_Events.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ServiceFilter(typeof(ValidateExistReservationActionFilter))]
-        public ActionResult<EventReservation> UpdateQuantityReservation(long idReservation, EventReservation eventReservation)
+        public ActionResult<EventReservation> UpdateQuantityReservation(long idReservation, long quantity)
         {
-            ActionResult<EventReservation> events = (!_eventReservationService.UpdateQuantityReservation(idReservation, eventReservation)) ?
-                new StatusCodeResult(StatusCodes.Status500InternalServerError) : Ok(eventReservation);
+            ActionResult<EventReservation> events = (!_eventReservationService.UpdateQuantityReservation(idReservation, quantity)) ?
+                new StatusCodeResult(StatusCodes.Status500InternalServerError) : Ok();
             return events;
         }
 
