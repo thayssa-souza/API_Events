@@ -10,6 +10,10 @@ namespace API_Events.Core.Services
         {
             _eventReservationRepository = eventReservationRepository;
         }
+        public EventReservation GetReservationById(long idReservation)
+        {
+            return _eventReservationRepository.GetReservationById(idReservation);
+        }
 
         public List<EventReservation> GetReservationList()
         {

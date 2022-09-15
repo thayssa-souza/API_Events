@@ -18,7 +18,7 @@ namespace API_Events.Controllers
             _cityEventService = cityEventService;
         }
 
-        [HttpGet("buscar-todos-eventos")]
+        [HttpGet("buscar/eventos")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<CityEvent> GetAllEvents()
@@ -28,8 +28,17 @@ namespace API_Events.Controllers
             return events;
         }
 
+        [HttpGet("buscar/evento/id")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<CityEvent> GetEventById(long idEvent)
+        {
+            var cityEvents = _cityEventService.GetEventById(idEvent);
+            ActionResult<CityEvent> events = cityEvents != null ? Ok(cityEvents) : BadRequest();
+            return events;
+        }
 
-        [HttpGet("buscar-evento-por-nome")]
+        [HttpGet("buscar/evento/nome")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<CityEvent> GetEventByTitle(string title)
@@ -39,7 +48,7 @@ namespace API_Events.Controllers
             return events;
         }
 
-        [HttpGet("buscar-evento-local-data")]
+        [HttpGet("buscar/evento/local/data")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<CityEvent> GetEventByLocalDate(string local, DateTime dateEvent)
@@ -49,7 +58,7 @@ namespace API_Events.Controllers
             return events;
         }
 
-        [HttpGet("buscar-evento-preco-data")]
+        [HttpGet("buscar/evento/preco/data")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<CityEvent> GetEventByPriceDate(decimal priceMin, decimal priceMax, DateTime dateHourEvent)
@@ -59,32 +68,35 @@ namespace API_Events.Controllers
             return events;
         }
 
-        [HttpPost("adicionar-evento")]
+        [HttpPost("adicionar/evento")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<CityEvent> InsertCityEvent(CityEvent newCityEvent)
         {
-            ActionResult<CityEvent> events = (!_cityEventService.InsertCityEvent(newCityEvent)) ? BadRequest() : Ok(newCityEvent);
+            ActionResult<CityEvent> events = (!_cityEventService.InsertCityEvent(newCityEvent)) ? 
+                BadRequest() : Ok(newCityEvent);
             return events;
         }
 
-        [HttpPut("atualizar-evento")]
+        [HttpPut("atualizar/evento/{idEvent}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ServiceFilter(typeof(ValidateExistEventActionFilter))]
         public ActionResult<CityEvent> UpdateCityEvent(long idEvent, CityEvent cityEvent)
         {
-            ActionResult<CityEvent> events = (!_cityEventService.UpdateCityEvent(idEvent, cityEvent)) ? BadRequest() : Ok(cityEvent);
+            ActionResult<CityEvent> events = (!_cityEventService.UpdateCityEvent(idEvent, cityEvent)) ? 
+                new StatusCodeResult(StatusCodes.Status500InternalServerError) : Ok(cityEvent);
             return events;
         }
 
-        [HttpDelete("deletar-evento")]
+        [HttpDelete("deletar/evento/{idEvent}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ServiceFilter(typeof(ValidateExistEventActionFilter))]
         public ActionResult<CityEvent> DeleteCityEvent(long idEvent)
         {
-            ActionResult<CityEvent> events = (!_cityEventService.DeleteCityEvent(idEvent)) ? BadRequest() : Ok();
+            ActionResult<CityEvent> events = (!_cityEventService.DeleteCityEvent(idEvent)) ?
+                new StatusCodeResult(StatusCodes.Status500InternalServerError) : Ok();
             return events;
         }
 

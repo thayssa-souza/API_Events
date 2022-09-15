@@ -20,6 +20,18 @@ namespace API_Events.Infra.Data.Repositories
             return conn.Query<EventReservation>(query).ToList();
         }
 
+        public EventReservation GetReservationById(long idReservation)
+        {
+            var query = "SELECT * FROM EventReservation WHERE IdReservation = @idReservation";
+            var parameters = new DynamicParameters(new
+            {
+                idReservation,
+            });
+
+            using var conn = _cnnDataBase.CreateConnection();
+            return conn.QueryFirstOrDefault<EventReservation>(query, parameters);
+        }
+
         public List<EventReservation> GetReservationEventByPerson(string title, string personName)
         {
             var query = $"SELECT * FROM EventReservation AS event " +
