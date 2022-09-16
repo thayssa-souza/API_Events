@@ -21,56 +21,48 @@ namespace API_Events.Controllers
         [HttpGet("buscar/eventos")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<CityEvent> GetAllEvents()
+        public async Task<ActionResult<List<CityEvent>>> GetAllEvents()
         {
-            return Ok(_cityEventService.GetAllEvents());
+            return Ok(await _cityEventService.GetAllEvents());
         }
 
         [HttpGet("buscar/evento/id")]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ServiceFilter(typeof(ValidateExistEventActionFilter))]
-        public ActionResult<CityEvent> GetEventById(long idEvent)
+        public async Task<ActionResult<CityEvent>> GetEventById(long idEvent)
         {
-            return Ok(_cityEventService.GetEventById(idEvent));
+            return Ok(await _cityEventService.GetEventById(idEvent));
         }
 
         [HttpGet("buscar/evento/nome")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<CityEvent> GetEventByTitle(string title)
+        public async Task<ActionResult<List<CityEvent>>> GetEventByTitle(string title)
         {
-            var cityEvents = _cityEventService.GetEventByTitle(title);
-            ActionResult<CityEvent> events = (cityEvents != null) ? Ok(cityEvents) : NotFound();
-            return events;
+            return Ok(await _cityEventService.GetEventByTitle(title));
         }
 
         [HttpGet("buscar/evento/local/data")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<CityEvent> GetEventByLocalDate(string local, DateTime dateEvent)
+        public async Task<ActionResult<List<CityEvent>>> GetEventByLocalDate(string local, DateTime dateEvent)
         {
-            var cityEvents = _cityEventService.GetEventByLocalDate(local, dateEvent);
-            ActionResult<CityEvent> events = (cityEvents != null) ? Ok(cityEvents) : NotFound();
-            return events;
+            return Ok(await _cityEventService.GetEventByLocalDate(local, dateEvent));
         }
 
         [HttpGet("buscar/evento/preco/data")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<CityEvent> GetEventByPriceDate(decimal priceMin, decimal priceMax, DateTime dateHourEvent)
+        public async Task<ActionResult<List<CityEvent>>> GetEventByPriceDate(decimal priceMin, decimal priceMax, DateTime dateHourEvent)
         {
-            var cityEvents = _cityEventService.GetEventByPriceDate(priceMin, priceMax, dateHourEvent);
-            ActionResult<CityEvent> events = (cityEvents != null) ? Ok(cityEvents) : NotFound();
-            return events;
+            return Ok(await _cityEventService.GetEventByPriceDate(priceMin, priceMax, dateHourEvent));
         }
 
         [HttpPost("adicionar/evento")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<CityEvent> InsertCityEvent(CityEvent newCityEvent)
+        public async Task<ActionResult<CityEvent>> InsertCityEvent(CityEvent newCityEvent)
         {
-            ActionResult<CityEvent> events = (!_cityEventService.InsertCityEvent(newCityEvent)) ? 
+            ActionResult<CityEvent> events = (!await _cityEventService.InsertCityEvent(newCityEvent)) ? 
                 BadRequest() : Ok(newCityEvent);
             return events;
         }
@@ -79,19 +71,30 @@ namespace API_Events.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ServiceFilter(typeof(ValidateExistEventActionFilter))]
-        public ActionResult<CityEvent> UpdateCityEvent(long idEvent, CityEvent cityEvent)
+        public async Task<ActionResult<CityEvent>> UpdateCityEvent(long idEvent, CityEvent cityEvent)
         {
-            ActionResult<CityEvent> events = (!_cityEventService.UpdateCityEvent(idEvent, cityEvent)) ? 
+            ActionResult<CityEvent> events = (!await _cityEventService.UpdateCityEvent(idEvent, cityEvent)) ? 
                 new StatusCodeResult(StatusCodes.Status500InternalServerError) : Ok(cityEvent);
+            return events;
+        }
+
+        [HttpPut("atualizar/{status}/evento")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ServiceFilter(typeof(ValidateExistEventActionFilter))]
+        public async Task<ActionResult<CityEvent>> UpdateEventStatus(long idEvent)
+        {
+            ActionResult<CityEvent> events = (!await _cityEventService.UpdateEventStatus(idEvent)) ?
+                new StatusCodeResult(StatusCodes.Status500InternalServerError) : Ok();
             return events;
         }
 
         [HttpDelete("deletar/evento/{idEvent}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<CityEvent> DeleteCityEvent(long idEvent)
+        public async Task<ActionResult<CityEvent>> DeleteCityEvent(long idEvent)
         {
-            ActionResult<CityEvent> events = (!_cityEventService.DeleteCityEvent(idEvent)) ?
+            ActionResult<CityEvent> events = (!await _cityEventService.DeleteCityEvent(idEvent)) ?
                 BadRequest() : Ok();
             return events;
         }

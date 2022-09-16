@@ -12,60 +12,65 @@ namespace API_Events.Core.Services
             _cityEventRepository = cityEventRepository;
         }
 
-        public List<CityEvent> GetAllEvents()
+        public Task<List<CityEvent>> GetAllEvents()
         {
-            return _cityEventRepository.GetAllEvents();
+            return await _cityEventRepository.GetAllEvents();
         }
 
-        public CityEvent GetEventById(long idEvent)
+        public Task<CityEvent> GetEventById(long idEvent)
         {
             
-             return _cityEventRepository.GetEventById(idEvent);
+             return await _cityEventRepository.GetEventById(idEvent);
         }
 
-        public List<CityEvent> GetEventByLocalDate(string local, DateTime dateEvent)
+        public Task<List<CityEvent>> GetEventByLocalDate(string local, DateTime dateEvent)
         {
-            return _cityEventRepository.GetEventByLocalDate(local, dateEvent);
+            return await _cityEventRepository.GetEventByLocalDate(local, dateEvent);
         }
 
-        public List<CityEvent> GetEventByTitle(string title)
+        public Task<List<CityEvent>> GetEventByTitle(string title)
         {
-            return _cityEventRepository.GetEventByTitle(title);
+            return await _cityEventRepository.GetEventByTitle(title);
         }
 
-        public List<CityEvent> GetEventByPriceDate(decimal priceMin, decimal priceMax, DateTime dateHourEvent)
+        public Task<List<CityEvent>> GetEventByPriceDate(decimal priceMin, decimal priceMax, DateTime dateHourEvent)
         {
-            return _cityEventRepository.GetEventByPriceDate(priceMin, priceMax, dateHourEvent);
+            return await _cityEventRepository.GetEventByPriceDate(priceMin, priceMax, dateHourEvent);
         }
 
-        public bool InsertCityEvent(CityEvent newCityEvent)
+        public Task<bool> InsertCityEvent(CityEvent newCityEvent)
         {
-            return _cityEventRepository.InsertCityEvent(newCityEvent);
+            return await _cityEventRepository.InsertCityEvent(newCityEvent);
         }
 
-        public bool UpdateCityEvent(long idEvent, CityEvent cityEvent)
+        public Task<bool> UpdateCityEvent(long idEvent, CityEvent cityEvent)
         {
 
-            return _cityEventRepository.UpdateCityEvent(idEvent, cityEvent);
+            return await _cityEventRepository.UpdateCityEvent(idEvent, cityEvent);
         }
 
-        public bool DeleteCityEvent(long idEvent)
+        public async Task<bool> UpdateEventStatus(long idEvent)
+        {
+            return await _cityEventRepository.UpdateStatusEvent(idEvent);
+        }
+
+        public Task<bool> DeleteCityEvent(long idEvent)
         {
             try
             {
-                return _cityEventRepository.DeleteCityEvent(idEvent);
+                return await _cityEventRepository.DeleteCityEvent(idEvent);
             }
             catch (NullReferenceException ex)
             {
                 Console.WriteLine($"Erro - Valor nulo! Mensagem {ex.Message},  stack trace {ex.StackTrace}, {ex.TargetSite}");
-                return false;
+                return await false;
             }
             catch (Exception ex)
             {
                 var nameException = ex.GetType().Name;
 
                 Console.WriteLine($"Erro - {nameException}. Mensagem {ex.Message},  stack trace {ex.StackTrace}, {ex.TargetSite}");
-                return false;
+                return await false;
             }
         }
     }

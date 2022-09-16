@@ -4,11 +4,11 @@ namespace API_Events.Core.Interfaces.IReservations
 {
     public interface IEventReservationService
     {
-        List<EventReservation> GetReservationList();
-        EventReservation GetReservationById(long idReservation);
-        List<EventReservation> GetReservationEventByPerson(string title, string personName);
-        bool InsertReservation(long idEvent, string personName, long quantity);
-        bool UpdateQuantityReservation(long idReservation, long quantity);
-        bool DeleteReservation(long idReservation);
+        Task<List<EventReservation>> GetReservationList();
+        Task<EventReservation> GetReservationById(long idReservation);
+        Task<List<EventReservation>> GetReservationEventByPerson(string title, string personName);
+        Task<bool> InsertReservation(long idEvent, string personName, long quantity);
+        Task<bool> UpdateQuantityReservation(long idReservation, long quantity);
+        Task<bool> DeleteReservation(long idReservation);
     }
 }

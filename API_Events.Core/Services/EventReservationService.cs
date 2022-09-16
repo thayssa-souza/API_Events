@@ -11,48 +11,48 @@ namespace API_Events.Core.Services
             _eventReservationRepository = eventReservationRepository;
         }
 
-        public List<EventReservation> GetReservationList()
+        public Task<List<EventReservation>> GetReservationList()
         {
-            return _eventReservationRepository.GetReservationList();
+            return await _eventReservationRepository.GetReservationList();
         }
 
-        public EventReservation GetReservationById(long idReservation)
+        public Task<EventReservation> GetReservationById(long idReservation)
         {
-            return _eventReservationRepository.GetReservationById(idReservation);
+            return await _eventReservationRepository.GetReservationById(idReservation);
         }
 
-        public List<EventReservation> GetReservationEventByPerson(string title, string personName)
+        public Task<List<EventReservation>> GetReservationEventByPerson(string title, string personName)
         {
-            return _eventReservationRepository.GetReservationEventByPerson(title, personName);
+            return await _eventReservationRepository.GetReservationEventByPerson(title, personName);
         }
 
-        public bool InsertReservation(long idEvent, string personName, long quantity)
+        public Task<bool> InsertReservation(long idEvent, string personName, long quantity)
         {
-            return _eventReservationRepository.InsertReservation(idEvent, personName, quantity);
+            return await _eventReservationRepository.InsertReservation(idEvent, personName, quantity);
         }
 
-        public bool UpdateQuantityReservation(long idReservation, long quantity)
+        public Task<bool> UpdateQuantityReservation(long idReservation, long quantity)
         {
-            return _eventReservationRepository.UpdateQuantityReservation(idReservation, quantity);
+            return await _eventReservationRepository.UpdateQuantityReservation(idReservation, quantity);
         }
 
-        public bool DeleteReservation(long idReservation)
+        public Task<bool> DeleteReservation(long idReservation)
         {
             try
             {
-                return _eventReservationRepository.DeleteReservation(idReservation);
+                return await _eventReservationRepository.DeleteReservation(idReservation);
             }
             catch (NullReferenceException ex)
             {
                 Console.WriteLine($"Erro - Valor nulo! Mensagem {ex.Message},  stack trace {ex.StackTrace}, {ex.TargetSite}");
-                return false;
+                return await false;
             }
             catch (Exception ex)
             {
                 var nameException = ex.GetType().Name;
 
                 Console.WriteLine($"Erro - {nameException}. Mensagem {ex.Message},  stack trace {ex.StackTrace}, {ex.TargetSite}");
-                return false;
+                return await false;
             }
         }
     }
