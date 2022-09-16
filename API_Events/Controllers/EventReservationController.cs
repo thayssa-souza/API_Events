@@ -37,6 +37,7 @@ namespace API_Events.Controllers
 
         [HttpGet("buscar/reserva/evento/pessoa")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize]
         public async Task<ActionResult<List<EventReservation>>> GetReservationEventByPerson(string title, string personName)
         {
             return Ok(await _eventReservationService.GetReservationEventByPerson(title, personName));
@@ -47,6 +48,7 @@ namespace API_Events.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ServiceFilter(typeof(ValidateExistEventActionFilter))]
         [ServiceFilter(typeof(ConfirmStatusActionFilter))]
+        [Authorize]
         public async Task<ActionResult<EventReservation>> InsertReservation(long idEvent, string personName, long quantity)
         {
             ActionResult<EventReservation> events = (!await _eventReservationService.InsertReservation(idEvent, personName, quantity)) ? 
