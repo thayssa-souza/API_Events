@@ -65,22 +65,8 @@ namespace API_Events.Core.Services
 
         public async Task<bool> DeleteCityEvent(long idEvent)
         {
-            try
-            {
-                return await _cityEventRepository.DeleteCityEvent(idEvent);
-            }
-            catch (NullReferenceException ex)
-            {
-                Console.WriteLine($"Erro - Valor nulo! Mensagem {ex.Message},  stack trace {ex.StackTrace}, {ex.TargetSite}");
-                return false;
-            }
-            catch (Exception ex)
-            {
-                var nameException = ex.GetType().Name;
-
-                Console.WriteLine($"Erro - {nameException}. Mensagem {ex.Message},  stack trace {ex.StackTrace}, {ex.TargetSite}");
-                return false;
-            }
+             return await _cityEventRepository.DeleteCityEvent(idEvent);
         }
+
     }
 }

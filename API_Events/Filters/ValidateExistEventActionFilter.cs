@@ -16,7 +16,7 @@ namespace API_Events.Filters
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             long idEvent = (long)context.ActionArguments["idEvent"];
-            if(_cityEventService.GetEventById(idEvent) == null)
+            if (_cityEventService.GetEventById(idEvent) == null)
             {
                 context.Result = new StatusCodeResult(StatusCodes.Status400BadRequest);
             }

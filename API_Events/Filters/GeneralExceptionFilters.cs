@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Data.SqlClient;
-using System.Reflection;
 
 namespace API_Events.Filters
 {
@@ -17,7 +16,7 @@ namespace API_Events.Filters
                 Type = context.Exception.GetType().Name
             };
 
-            switch(context.Exception)
+            switch (context.Exception)
             {
                 case SqlException:
                     problem.Status = 503;

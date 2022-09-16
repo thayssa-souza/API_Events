@@ -38,22 +38,7 @@ namespace API_Events.Core.Services
 
         public async Task<bool> DeleteReservation(long idReservation)
         {
-            try
-            {
-                return await _eventReservationRepository.DeleteReservation(idReservation);
-            }
-            catch (NullReferenceException ex)
-            {
-                Console.WriteLine($"Erro - Valor nulo! Mensagem {ex.Message},  stack trace {ex.StackTrace}, {ex.TargetSite}");
-                return false;
-            }
-            catch (Exception ex)
-            {
-                var nameException = ex.GetType().Name;
-
-                Console.WriteLine($"Erro - {nameException}. Mensagem {ex.Message},  stack trace {ex.StackTrace}, {ex.TargetSite}");
-                return false;
-            }
+            return await _eventReservationRepository.DeleteReservation(idReservation);
         }
     }
 }

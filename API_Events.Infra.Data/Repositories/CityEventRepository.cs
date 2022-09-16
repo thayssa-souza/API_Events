@@ -1,8 +1,10 @@
 ﻿using API_Events.Core.Interfaces;
 using API_Events.Core.Interfaces.IRepository;
 using API_Events.Core.Models;
+using Aspose.Pdf.Operators;
 using Dapper;
 using System;
+using System.Data.SqlClient;
 using System.Diagnostics;
 
 namespace API_Events.Infra.Data.Repositories
@@ -19,8 +21,17 @@ namespace API_Events.Infra.Data.Repositories
         public async Task<List<CityEvent>> GetAllEvents()
         {
             var query = "SELECT * FROM CityEvent";
-            using var conn = _cnnDataBase.CreateConnection();
-            return (await conn.QueryAsync<CityEvent>(query)).ToList();
+            try
+            {
+                using var conn = _cnnDataBase.CreateConnection();
+                return (await conn.QueryAsync<CityEvent>(query)).ToList();
+            }
+            catch (Exception ex)
+            {
+                var nameException = ex.GetType().Name;
+                Console.WriteLine($"Erro - {nameException}. Mensagem {ex.Message},  stack trace {ex.StackTrace}, {ex.TargetSite}");
+                throw;
+            }
         }
 
         public async Task<CityEvent> GetEventById(long idEvent)
@@ -28,8 +39,18 @@ namespace API_Events.Infra.Data.Repositories
             var query = "SELECT * FROM CityEvent WHERE IdEvent = @idEvent";
             var parameters = new DynamicParameters(new { idEvent, });
 
-            using var conn = _cnnDataBase.CreateConnection();
-            return await conn.QueryFirstOrDefaultAsync<CityEvent>(query, parameters);
+            try
+            {
+                using var conn = _cnnDataBase.CreateConnection();
+                return await conn.QueryFirstOrDefaultAsync<CityEvent>(query, parameters);
+
+            }
+            catch (Exception ex)
+            {
+                var nameException = ex.GetType().Name;
+                Console.WriteLine($"Erro - {nameException}. Mensagem {ex.Message},  stack trace {ex.StackTrace}, {ex.TargetSite}");
+                throw;
+            }
         }
 
         public async Task<List<CityEvent>> GetEventByTitle(string title)
@@ -37,8 +58,18 @@ namespace API_Events.Infra.Data.Repositories
             var query = $"SELECT * FROM CityEvent WHERE title LIKE ('%' + @title + '%')";
             var parameters = new DynamicParameters(new { title, });
 
-            using var conn = _cnnDataBase.CreateConnection();
-            return  (await conn.QueryAsync<CityEvent>(query, parameters)).ToList();
+            try
+            {
+                using var conn = _cnnDataBase.CreateConnection();
+                return (await conn.QueryAsync<CityEvent>(query, parameters)).ToList();
+
+            }
+            catch (Exception ex)
+            {
+                var nameException = ex.GetType().Name;
+                Console.WriteLine($"Erro - {nameException}. Mensagem {ex.Message},  stack trace {ex.StackTrace}, {ex.TargetSite}");
+                throw;
+            }
         }
 
         public async Task<List<CityEvent>> GetEventByLocalDate(string local, DateTime dateHourEvent)
@@ -50,8 +81,18 @@ namespace API_Events.Infra.Data.Repositories
                 DateHourEvent = dateHourEvent,
             });
 
-            using var conn = _cnnDataBase.CreateConnection();
-            return (await conn.QueryAsync<CityEvent>(query, parameters)).ToList();
+            try
+            {
+                using var conn = _cnnDataBase.CreateConnection();
+                return (await conn.QueryAsync<CityEvent>(query, parameters)).ToList();
+
+            }
+            catch (Exception ex)
+            {
+                var nameException = ex.GetType().Name;
+                Console.WriteLine($"Erro - {nameException}. Mensagem {ex.Message},  stack trace {ex.StackTrace}, {ex.TargetSite}");
+                throw;
+            }
         }
 
         public async Task<List<CityEvent>> GetEventByPriceDate(decimal priceMin, decimal priceMax, DateTime dateHourEvent)
@@ -64,21 +105,40 @@ namespace API_Events.Infra.Data.Repositories
                 dateHourEvent,
             });
 
-            using var conn = _cnnDataBase.CreateConnection();
-            return (await conn.QueryAsync<CityEvent>(query, parameters)).ToList();
+            try
+            {
+                using var conn = _cnnDataBase.CreateConnection();
+                return (await conn.QueryAsync<CityEvent>(query, parameters)).ToList();
+
+            }
+            catch (Exception ex)
+            {
+                var nameException = ex.GetType().Name;
+                Console.WriteLine($"Erro - {nameException}. Mensagem {ex.Message},  stack trace {ex.StackTrace}, {ex.TargetSite}");
+                throw;
+            }
         }
 
         public async Task<CityEvent> ConsultReservation(long idEvent)
         {
             var query = $"SELECT * FROM EventReservation AS event " +
                 $"INNER JOIN CityEvent AS city ON event.IdEvent = @idEvent AND city.IdEvent = @idEvent " +
-                $"WHERE event.IdEvent = city.IdEvent"; ;
+                $"WHERE event.IdEvent = city.IdEvent";
             var parameters = new DynamicParameters(new { idEvent });
+            
+            try
+            {
+                using var conn = _cnnDataBase.CreateConnection();
+                return await conn.QueryFirstOrDefaultAsync<CityEvent>(query, parameters);
 
-            using var conn = _cnnDataBase.CreateConnection();
-            return await conn.QueryFirstOrDefaultAsync<CityEvent>(query, parameters);
+            }
+            catch (Exception ex)
+            {
+                var nameException = ex.GetType().Name;
+                Console.WriteLine($"Erro - {nameException}. Mensagem {ex.Message},  stack trace {ex.StackTrace}, {ex.TargetSite}");
+                throw;
+            }
         }
-
 
         public async Task<bool> InsertCityEvent(CityEvent newCityEvent)
         {
@@ -86,8 +146,17 @@ namespace API_Events.Infra.Data.Repositories
                 "@Local, @Address, @Price, @Status)";
             var parameters = new DynamicParameters(newCityEvent);
 
-            using var conn = _cnnDataBase.CreateConnection();
-            return await conn.ExecuteAsync(query, parameters) == 1;
+            try
+            {
+                using var conn = _cnnDataBase.CreateConnection();
+                return await conn.ExecuteAsync(query, parameters) == 1;
+            }
+            catch (Exception ex)
+            {
+                var nameException = ex.GetType().Name;
+                Console.WriteLine($"Erro - {nameException}. Mensagem {ex.Message},  stack trace {ex.StackTrace}, {ex.TargetSite}");
+                throw;
+            }
         }
 
         public async Task<bool> UpdateCityEvent(long idEvent, CityEvent cityEvent)
@@ -96,8 +165,17 @@ namespace API_Events.Infra.Data.Repositories
             var parameters = new DynamicParameters(cityEvent);
             cityEvent.IdEvent = idEvent;
 
-            using var conn = _cnnDataBase.CreateConnection();
-            return await conn.ExecuteAsync(query, parameters) == 1;
+            try
+            {
+                using var conn = _cnnDataBase.CreateConnection();
+                return await conn.ExecuteAsync(query, parameters) == 1;
+            }
+            catch (Exception ex)
+            {
+                var nameException = ex.GetType().Name;
+                Console.WriteLine($"Erro - {nameException}. Mensagem {ex.Message},  stack trace {ex.StackTrace}, {ex.TargetSite}");
+                throw;
+            }
         }
 
         public async Task<bool> InactiveCityEvent (long idEvent)
@@ -105,8 +183,17 @@ namespace API_Events.Infra.Data.Repositories
             var query = "UPDATE CityEvent SET Status = 0 WHERE IdEvent = @IdEvent";
             var parameters = new DynamicParameters(new { idEvent });
 
-            using var conn = _cnnDataBase.CreateConnection();
-            return await conn.ExecuteAsync(query, parameters) == 1;
+            try
+            {
+                using var conn = _cnnDataBase.CreateConnection();
+                return await conn.ExecuteAsync(query, parameters) == 1;
+            }
+            catch (Exception ex)
+            {
+                var nameException = ex.GetType().Name;
+                Console.WriteLine($"Erro - {nameException}. Mensagem {ex.Message},  stack trace {ex.StackTrace}, {ex.TargetSite}");
+                throw;
+            }
         }
 
         public async Task<bool> ActiveCityEvent (long idEvent)
@@ -114,8 +201,17 @@ namespace API_Events.Infra.Data.Repositories
             var query = "UPDATE CityEvent SET Status = 1 WHERE IdEvent = @IdEvent";
             var parameters = new DynamicParameters(new { idEvent });
 
-            using var conn = _cnnDataBase.CreateConnection();
-            return await conn.ExecuteAsync(query, parameters) == 1;
+            try
+            {
+                using var conn = _cnnDataBase.CreateConnection();
+                return await conn.ExecuteAsync(query, parameters) == 1;
+            }
+            catch (Exception ex)
+            {
+                var nameException = ex.GetType().Name;
+                Console.WriteLine($"Erro - {nameException}. Mensagem {ex.Message},  stack trace {ex.StackTrace}, {ex.TargetSite}");
+                throw;
+            }
         }
 
         public async Task<bool> DeleteCityEvent(long idEvent)
@@ -123,8 +219,17 @@ namespace API_Events.Infra.Data.Repositories
             var query = "DELETE FROM CityEvent WHERE IdEvent = @idEvent";
             var parameters = new DynamicParameters(new { idEvent, });
 
-            using var conn = _cnnDataBase.CreateConnection();
-            return await conn.ExecuteAsync(query, parameters) == 1;
+            try
+            {
+                using var conn = _cnnDataBase.CreateConnection();
+                return await conn.ExecuteAsync(query, parameters) == 1;
+            }
+            catch (Exception ex)
+            {
+                var nameException = ex.GetType().Name;
+                Console.WriteLine($"Erro - {nameException}. Mensagem {ex.Message},  stack trace {ex.StackTrace}, {ex.TargetSite}");
+                return false;
+            }
         }
     }
 }

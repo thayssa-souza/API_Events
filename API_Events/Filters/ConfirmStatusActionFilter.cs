@@ -18,10 +18,11 @@ namespace API_Events.Filters
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             long idEvent = (long)context.ActionArguments["idEvent"];
-            if(_cityEventService.ConsultReservation(idEvent) != null)
+            if (_cityEventService.ConsultReservation(idEvent).Result != null)
             {
                 context.Result = new StatusCodeResult(StatusCodes.Status406NotAcceptable);
             }
         }
     }
+
 }

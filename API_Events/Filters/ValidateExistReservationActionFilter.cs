@@ -19,7 +19,8 @@ namespace API_Events.Filters
             if (_eventReservationService.GetReservationById(idReservation) == null)
             {
                 context.Result = new StatusCodeResult(StatusCodes.Status400BadRequest);
-            }
+            };
         }
+
     }
 }

@@ -20,7 +20,6 @@ namespace API_Events.Controllers
         }
 
         [HttpGet("buscar/eventos")]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<CityEvent>>> GetAllEvents()
         {
@@ -28,7 +27,6 @@ namespace API_Events.Controllers
         }
 
         [HttpGet("buscar/evento/id")]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ServiceFilter(typeof(ValidateExistEventActionFilter))]
         public async Task<ActionResult<CityEvent>> GetEventById(long idEvent)
@@ -37,7 +35,6 @@ namespace API_Events.Controllers
         }
 
         [HttpGet("buscar/evento/nome")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<CityEvent>>> GetEventByTitle(string title)
         {
@@ -107,13 +104,14 @@ namespace API_Events.Controllers
 
         [HttpDelete("deletar/evento/{idEvent}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ServiceFilter(typeof(ValidateExistEventActionFilter))]
         [ServiceFilter(typeof(ConfirmStatusActionFilter))]
         [Authorize(Roles = "admin")]
         public async Task<ActionResult<CityEvent>> DeleteCityEvent(long idEvent)
         {
             ActionResult<CityEvent> events = (!await _cityEventService.DeleteCityEvent(idEvent)) ?
-                BadRequest() : Ok();
+                new StatusCodeResult(StatusCodes.Status500InternalServerError) : Ok();
             return events;
         }
 
