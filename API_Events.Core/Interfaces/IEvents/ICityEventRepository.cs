@@ -12,7 +12,8 @@ namespace API_Events.Core.Interfaces.IRepository
         Task<CityEvent> ConsultReservation(long idEvent);
         Task<bool> InsertCityEvent(CityEvent newCityEvent);
         Task<bool> UpdateCityEvent(long idEvent, CityEvent cityEvent);
-        Task<bool> UpdateEventStatus(long idEvent);
+        Task<bool> InactiveCityEvent(long idEvent);
+        Task<bool> ActiveCityEvent(long idEvent);
         Task<bool> DeleteCityEvent(long idEvent);
 
     }

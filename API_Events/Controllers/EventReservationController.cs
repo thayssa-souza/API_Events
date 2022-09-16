@@ -45,6 +45,7 @@ namespace API_Events.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ServiceFilter(typeof(ValidateExistEventActionFilter))]
+        [ServiceFilter(typeof(ConfirmStatusActionFilter))]
         public async Task<ActionResult<EventReservation>> InsertReservation(long idEvent, string personName, long quantity)
         {
             ActionResult<EventReservation> events = (!await _eventReservationService.InsertReservation(idEvent, personName, quantity)) ? 

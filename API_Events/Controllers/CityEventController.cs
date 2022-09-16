@@ -57,6 +57,13 @@ namespace API_Events.Controllers
             return Ok(await _cityEventService.GetEventByPriceDate(priceMin, priceMax, dateHourEvent));
         }
 
+        [HttpGet("consultar/reservas")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<CityEvent>> ConsultReservation(long idEvent)
+        {
+            return Ok(await _cityEventService.ConsultReservation(idEvent));
+        }
+
         [HttpPost("adicionar/evento")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -78,13 +85,24 @@ namespace API_Events.Controllers
             return events;
         }
 
-        [HttpPut("atualizar/{status}/evento")]
+        [HttpPut("inativar/{status}/evento")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ServiceFilter(typeof(ValidateExistEventActionFilter))]
-        public async Task<ActionResult<CityEvent>> UpdateEventStatus(long idEvent)
+        public async Task<ActionResult<CityEvent>> InactiveCityEvent(long idEvent)
         {
-            ActionResult<CityEvent> events = (!await _cityEventService.UpdateEventStatus(idEvent)) ?
+            ActionResult<CityEvent> events = (!await _cityEventService.InactiveCityEvent(idEvent)) ?
+                new StatusCodeResult(StatusCodes.Status500InternalServerError) : Ok();
+            return events;
+        }
+
+        [HttpPut("ativar/{status}/evento")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ServiceFilter(typeof(ValidateExistEventActionFilter))]
+        public async Task<ActionResult<CityEvent>> ActiveCityEvent(long idEvent)
+        {
+            ActionResult<CityEvent> events = (!await _cityEventService.ActiveCityEvent(idEvent)) ?
                 new StatusCodeResult(StatusCodes.Status500InternalServerError) : Ok();
             return events;
         }

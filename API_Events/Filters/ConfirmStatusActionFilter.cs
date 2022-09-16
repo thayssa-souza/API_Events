@@ -15,7 +15,7 @@ namespace API_Events.Filters
             _eventReservationService = eventReservationService;
         }
 
-        public void OnActionExecuting(ActionExecutingContext context)
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
             long idEvent = (long)context.ActionArguments["idEvent"];
             if(_cityEventService.ConsultReservation(idEvent) != null)

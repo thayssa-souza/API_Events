@@ -70,8 +70,9 @@ namespace API_Events.Infra.Data.Repositories
 
         public async Task<CityEvent> ConsultReservation(long idEvent)
         {
-            var query = $"SELECT * FROM CityEvent AS city" +
-                $"INNER JOIN EventReservation AS event WHERE city.IdEvent = event.IdEvent";
+            var query = $"SELECT * FROM EventReservation AS event " +
+                $"INNER JOIN CityEvent AS city ON event.IdEvent = @idEvent AND city.IdEvent = @idEvent " +
+                $"WHERE event.IdEvent = city.IdEvent"; ;
             var parameters = new DynamicParameters(new { idEvent });
 
             using var conn = _cnnDataBase.CreateConnection();
@@ -99,7 +100,16 @@ namespace API_Events.Infra.Data.Repositories
             return await conn.ExecuteAsync(query, parameters) == 1;
         }
 
-        public async Task<bool> UpdateEventStatus (long idEvent)
+        public async Task<bool> InactiveCityEvent (long idEvent)
+        {
+            var query = "UPDATE CityEvent SET Status = 0 WHERE IdEvent = @IdEvent";
+            var parameters = new DynamicParameters(new { idEvent });
+
+            using var conn = _cnnDataBase.CreateConnection();
+            return await conn.ExecuteAsync(query, parameters) == 1;
+        }
+
+        public async Task<bool> ActiveCityEvent (long idEvent)
         {
             var query = "UPDATE CityEvent SET Status = 1 WHERE IdEvent = @IdEvent";
             var parameters = new DynamicParameters(new { idEvent });
