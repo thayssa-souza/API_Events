@@ -1,6 +1,7 @@
 using API_Events.Core.Interfaces.IEvents;
 using API_Events.Core.Models;
 using API_Events.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_Events.Controllers
@@ -57,16 +58,10 @@ namespace API_Events.Controllers
             return Ok(await _cityEventService.GetEventByPriceDate(priceMin, priceMax, dateHourEvent));
         }
 
-        [HttpGet("consultar/reservas")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<CityEvent>> ConsultReservation(long idEvent)
-        {
-            return Ok(await _cityEventService.ConsultReservation(idEvent));
-        }
-
         [HttpPost("adicionar/evento")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<CityEvent>> InsertCityEvent(CityEvent newCityEvent)
         {
             ActionResult<CityEvent> events = (!await _cityEventService.InsertCityEvent(newCityEvent)) ? 
@@ -78,6 +73,7 @@ namespace API_Events.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ServiceFilter(typeof(ValidateExistEventActionFilter))]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<CityEvent>> UpdateCityEvent(long idEvent, CityEvent cityEvent)
         {
             ActionResult<CityEvent> events = (!await _cityEventService.UpdateCityEvent(idEvent, cityEvent)) ? 
@@ -89,6 +85,7 @@ namespace API_Events.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ServiceFilter(typeof(ValidateExistEventActionFilter))]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<CityEvent>> InactiveCityEvent(long idEvent)
         {
             ActionResult<CityEvent> events = (!await _cityEventService.InactiveCityEvent(idEvent)) ?
@@ -100,6 +97,7 @@ namespace API_Events.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ServiceFilter(typeof(ValidateExistEventActionFilter))]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<CityEvent>> ActiveCityEvent(long idEvent)
         {
             ActionResult<CityEvent> events = (!await _cityEventService.ActiveCityEvent(idEvent)) ?
@@ -111,6 +109,7 @@ namespace API_Events.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ServiceFilter(typeof(ConfirmStatusActionFilter))]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<CityEvent>> DeleteCityEvent(long idEvent)
         {
             ActionResult<CityEvent> events = (!await _cityEventService.DeleteCityEvent(idEvent)) ?

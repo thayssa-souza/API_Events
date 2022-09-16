@@ -1,6 +1,7 @@
 ﻿using API_Events.Core.Interfaces.IReservations;
 using API_Events.Core.Models;
 using API_Events.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_Events.Controllers
@@ -57,6 +58,7 @@ namespace API_Events.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ServiceFilter(typeof(ValidateExistReservationActionFilter))]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<EventReservation>> UpdateQuantityReservation(long idReservation, long quantity)
         {
             ActionResult<EventReservation> events = (!await _eventReservationService.UpdateQuantityReservation(idReservation, quantity)) ?
@@ -67,6 +69,7 @@ namespace API_Events.Controllers
         [HttpDelete("deletar/reserva/{idReservation}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize(Roles = "admin")]
         public async Task<ActionResult<EventReservation>> DeleteReservation(long idReservation)
         {
             ActionResult<EventReservation> events = (!await _eventReservationService.DeleteReservation(idReservation)) ?
