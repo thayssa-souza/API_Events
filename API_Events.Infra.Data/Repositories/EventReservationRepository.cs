@@ -23,10 +23,7 @@ namespace API_Events.Infra.Data.Repositories
         public EventReservation GetReservationById(long idReservation)
         {
             var query = "SELECT * FROM EventReservation WHERE IdReservation = @idReservation";
-            var parameters = new DynamicParameters(new
-            {
-                idReservation,
-            });
+            var parameters = new DynamicParameters(new { idReservation, });
 
             using var conn = _cnnDataBase.CreateConnection();
             return conn.QueryFirstOrDefault<EventReservation>(query, parameters);
@@ -39,7 +36,8 @@ namespace API_Events.Infra.Data.Repositories
                 $"WHERE event.IdEvent = city.IdEvent";
             var parameters = new DynamicParameters(new
             {
-                title, personName,
+                title, 
+                personName,
             });
             using var conn = _cnnDataBase.CreateConnection();
             return conn.Query<EventReservation>(query, parameters).ToList();

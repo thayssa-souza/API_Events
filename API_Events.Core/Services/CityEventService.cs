@@ -19,7 +19,8 @@ namespace API_Events.Core.Services
 
         public CityEvent GetEventById(long idEvent)
         {
-            return _cityEventRepository.GetEventById(idEvent);
+            
+             return _cityEventRepository.GetEventById(idEvent);
         }
 
         public List<CityEvent> GetEventByLocalDate(string local, DateTime dateEvent)
@@ -44,12 +45,28 @@ namespace API_Events.Core.Services
 
         public bool UpdateCityEvent(long idEvent, CityEvent cityEvent)
         {
+
             return _cityEventRepository.UpdateCityEvent(idEvent, cityEvent);
         }
 
         public bool DeleteCityEvent(long idEvent)
         {
-            return _cityEventRepository.DeleteCityEvent(idEvent);
+            try
+            {
+                return _cityEventRepository.DeleteCityEvent(idEvent);
+            }
+            catch (NullReferenceException ex)
+            {
+                Console.WriteLine($"Erro - Valor nulo! Mensagem {ex.Message},  stack trace {ex.StackTrace}, {ex.TargetSite}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                var nameException = ex.GetType().Name;
+
+                Console.WriteLine($"Erro - {nameException}. Mensagem {ex.Message},  stack trace {ex.StackTrace}, {ex.TargetSite}");
+                return false;
+            }
         }
     }
 }

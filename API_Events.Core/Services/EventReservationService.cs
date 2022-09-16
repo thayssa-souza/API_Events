@@ -10,14 +10,15 @@ namespace API_Events.Core.Services
         {
             _eventReservationRepository = eventReservationRepository;
         }
-        public EventReservation GetReservationById(long idReservation)
-        {
-            return _eventReservationRepository.GetReservationById(idReservation);
-        }
 
         public List<EventReservation> GetReservationList()
         {
             return _eventReservationRepository.GetReservationList();
+        }
+
+        public EventReservation GetReservationById(long idReservation)
+        {
+            return _eventReservationRepository.GetReservationById(idReservation);
         }
 
         public List<EventReservation> GetReservationEventByPerson(string title, string personName)
@@ -37,7 +38,22 @@ namespace API_Events.Core.Services
 
         public bool DeleteReservation(long idReservation)
         {
-            return _eventReservationRepository.DeleteReservation(idReservation);
+            try
+            {
+                return _eventReservationRepository.DeleteReservation(idReservation);
+            }
+            catch (NullReferenceException ex)
+            {
+                Console.WriteLine($"Erro - Valor nulo! Mensagem {ex.Message},  stack trace {ex.StackTrace}, {ex.TargetSite}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                var nameException = ex.GetType().Name;
+
+                Console.WriteLine($"Erro - {nameException}. Mensagem {ex.Message},  stack trace {ex.StackTrace}, {ex.TargetSite}");
+                return false;
+            }
         }
     }
 }

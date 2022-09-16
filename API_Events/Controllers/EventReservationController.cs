@@ -22,10 +22,18 @@ namespace API_Events.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<EventReservation> GetReservationList()
         {
-            var eventReservation = _eventReservationService.GetReservationList();
-            ActionResult<EventReservation> events = eventReservation != null ? Ok(eventReservation) : BadRequest();
-            return events;
+            return Ok(_eventReservationService.GetReservationList());
         }
+
+        [HttpGet("buscar/reserva/{idReservation}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ServiceFilter(typeof(ValidateExistReservationActionFilter))]
+        public ActionResult<EventReservation> GetReservationById(long idReservation)
+        {
+            return Ok(_eventReservationService.GetReservationById(idReservation));
+        }
+
 
         [HttpGet("buscar/reserva/evento/pessoa")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -60,13 +68,12 @@ namespace API_Events.Controllers
         }
 
         [HttpDelete("deletar/reserva/{idReservation}")]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ServiceFilter(typeof(ValidateExistReservationActionFilter))]
         public ActionResult<EventReservation> DeleteReservation(long idReservation)
         {
             ActionResult<EventReservation> events = (!_eventReservationService.DeleteReservation(idReservation)) ?
-                new StatusCodeResult(StatusCodes.Status500InternalServerError) : Ok();
+                BadRequest() : Ok();
             return events;
         }
     }

@@ -23,19 +23,16 @@ namespace API_Events.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<CityEvent> GetAllEvents()
         {
-            var cityEvents = _cityEventService.GetAllEvents();
-            ActionResult<CityEvent> events = cityEvents != null ? Ok(cityEvents) : BadRequest();
-            return events;
+            return Ok(_cityEventService.GetAllEvents());
         }
 
         [HttpGet("buscar/evento/id")]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ServiceFilter(typeof(ValidateExistEventActionFilter))]
         public ActionResult<CityEvent> GetEventById(long idEvent)
         {
-            var cityEvents = _cityEventService.GetEventById(idEvent);
-            ActionResult<CityEvent> events = cityEvents != null ? Ok(cityEvents) : BadRequest();
-            return events;
+            return Ok(_cityEventService.GetEventById(idEvent));
         }
 
         [HttpGet("buscar/evento/nome")]
@@ -91,12 +88,11 @@ namespace API_Events.Controllers
 
         [HttpDelete("deletar/evento/{idEvent}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [ServiceFilter(typeof(ValidateExistEventActionFilter))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<CityEvent> DeleteCityEvent(long idEvent)
         {
             ActionResult<CityEvent> events = (!_cityEventService.DeleteCityEvent(idEvent)) ?
-                new StatusCodeResult(StatusCodes.Status500InternalServerError) : Ok();
+                BadRequest() : Ok();
             return events;
         }
 

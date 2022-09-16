@@ -26,10 +26,7 @@ namespace API_Events.Infra.Data.Repositories
         public CityEvent GetEventById(long idEvent)
         {
             var query = "SELECT * FROM CityEvent WHERE IdEvent = @idEvent";
-            var parameters = new DynamicParameters(new 
-            { 
-                idEvent, 
-            });
+            var parameters = new DynamicParameters(new { idEvent, });
 
             using var conn = _cnnDataBase.CreateConnection();
             return conn.QueryFirstOrDefault<CityEvent>(query, parameters);
@@ -38,10 +35,7 @@ namespace API_Events.Infra.Data.Repositories
         public List<CityEvent> GetEventByTitle(string title)
         {
             var query = $"SELECT * FROM CityEvent WHERE title LIKE ('%' + @title + '%')";
-            var parameters = new DynamicParameters(new
-            {
-                title,
-            });
+            var parameters = new DynamicParameters(new { title, });
 
             using var conn = _cnnDataBase.CreateConnection();
             return conn.Query<CityEvent>(query, parameters).ToList();
@@ -97,10 +91,7 @@ namespace API_Events.Infra.Data.Repositories
         public bool DeleteCityEvent(long idEvent)
         {
             var query = "DELETE FROM CityEvent WHERE IdEvent = @idEvent";
-            var parameters = new DynamicParameters(new
-            {
-                idEvent,
-            });
+            var parameters = new DynamicParameters(new { idEvent, });
 
             using var conn = _cnnDataBase.CreateConnection();
             return conn.Execute(query, parameters) == 1;

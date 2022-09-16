@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace API_Events.Core.Models
 {
@@ -9,12 +10,13 @@ namespace API_Events.Core.Models
         
         [Required(ErrorMessage = "É obrigatório cadastrar o nome do evento.")]
         [MaxLength(100, ErrorMessage = "Por razões comerciais, o nome do evento não pode conter mais que 100 caracteres.")]
+        [MinLength(2, ErrorMessage = "Por questões publicitárias, o nome do envento não pode conter menos que 2 caracteres.")]
         public string? Title { get; set; }
 
         [MaxLength(250, ErrorMessage = "A descrição do evento não pode ultrapassar 250 caracteres.")]
         public string? Description { get; set; }
 
-        [Required(ErrorMessage = "A data e o horário de ínicio do evento são obrigatórios no cadastro.")]
+        [Required(ErrorMessage = "A data e o horário de ínicio do evento são obrigatórios no cadastro")]
         public DateTime DateHourEvent { get; set; }
 
         [Required(ErrorMessage = "É obrigatório cadastrar o local onde acontecerá o evento.")]

@@ -24,6 +24,11 @@ builder.Services.AddScoped<IEventReservationService, EventReservationService>();
 builder.Services.AddScoped<ValidateExistEventActionFilter>();
 builder.Services.AddScoped<ValidateExistReservationActionFilter>();
 
+builder.Services.AddMvc(options =>
+{
+    options.Filters.Add<GeneralExceptionFilters>();
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
