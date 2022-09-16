@@ -20,14 +20,15 @@ builder.Services.AddSingleton<IConnectionDataBase, ConnectionDataBase>();
 builder.Services.AddScoped<ICityEventRepository, CityEventRepository>();
 builder.Services.AddScoped<ICityEventService, CityEventService>();
 builder.Services.AddScoped<IEventReservationRepository, EventReservationRepository>();
-builder.Services.AddScoped<IEventReservationService, EventReservationService>();
-builder.Services.AddScoped<ValidateExistEventActionFilter>();
-builder.Services.AddScoped<ValidateExistReservationActionFilter>();
 
 builder.Services.AddMvc(options =>
 {
     options.Filters.Add<GeneralExceptionFilters>();
 });
+builder.Services.AddScoped<IEventReservationService, EventReservationService>();
+builder.Services.AddScoped<ValidateExistEventActionFilter>();
+builder.Services.AddScoped<ValidateExistReservationActionFilter>();
+builder.Services.AddScoped<ConfirmStatusActionFilter>();
 
 var app = builder.Build();
 

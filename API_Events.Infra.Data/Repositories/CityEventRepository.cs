@@ -68,6 +68,17 @@ namespace API_Events.Infra.Data.Repositories
             return (await conn.QueryAsync<CityEvent>(query, parameters)).ToList();
         }
 
+        public async Task<CityEvent> ConsultReservation(long idEvent)
+        {
+            var query = $"SELECT * FROM CityEvent AS city" +
+                $"INNER JOIN EventReservation AS event WHERE city.IdEvent = event.IdEvent";
+            var parameters = new DynamicParameters(new { idEvent });
+
+            using var conn = _cnnDataBase.CreateConnection();
+            return await conn.QueryFirstOrDefaultAsync<CityEvent>(query, parameters);
+        }
+
+
         public async Task<bool> InsertCityEvent(CityEvent newCityEvent)
         {
             var query = "INSERT INTO CityEvent VALUES (@Title, @Description, @DateHourEvent, " +
@@ -90,7 +101,7 @@ namespace API_Events.Infra.Data.Repositories
 
         public async Task<bool> UpdateEventStatus (long idEvent)
         {
-            var query = "UPDATE CityEvent SET Status = true WHERE IdEvent = @IdEvent";
+            var query = "UPDATE CityEvent SET Status = 1 WHERE IdEvent = @IdEvent";
             var parameters = new DynamicParameters(new { idEvent });
 
             using var conn = _cnnDataBase.CreateConnection();

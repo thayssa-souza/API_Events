@@ -92,6 +92,7 @@ namespace API_Events.Controllers
         [HttpDelete("deletar/evento/{idEvent}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ServiceFilter(typeof(ConfirmStatusActionFilter))]
         public async Task<ActionResult<CityEvent>> DeleteCityEvent(long idEvent)
         {
             ActionResult<CityEvent> events = (!await _cityEventService.DeleteCityEvent(idEvent)) ?
